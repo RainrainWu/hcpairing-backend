@@ -4,6 +4,8 @@ const (
 
 	// Tags
 	Toothache = "Toothache"
+	Pregnancy = "Pregnancy"
+	Cough     = "Cough"
 
 	// Specialties
 	Anaesthesiology          = "Anaesthesiology"
@@ -55,11 +57,14 @@ const (
 
 var (
 	directMapping map[string][]string = map[string][]string{
-		Toothache: {Dentistry},
+		Toothache: {Dentistry, ChildDentistry},
+		Pregnancy: {Obstetrics},
+		Cough:     {Pneumology},
 	}
 )
 
 func contains(arr []string, str string) bool {
+
 	for _, a := range arr {
 		if a == str {
 			return true

@@ -25,13 +25,18 @@ func sliceCompare(a, b []string) bool {
 }
 
 func TestDirectConversion(t *testing.T) {
+
 	params := []struct {
 		tags   []string
 		result []string
 	}{
 		{
 			[]string{hcpairing.Toothache},
-			[]string{hcpairing.Dentistry},
+			[]string{hcpairing.Dentistry, hcpairing.ChildDentistry},
+		},
+		{
+			[]string{hcpairing.Cough, hcpairing.Pregnancy},
+			[]string{hcpairing.Pneumology, hcpairing.Obstetrics},
 		},
 	}
 
