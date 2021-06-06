@@ -1,10 +1,11 @@
 package main
 
 import (
-	_ "github.com/RainrainWu/hcpairing"
+	"github.com/RainrainWu/hcpairing"
 )
 
 func main() {
 
-	// hcpairing.Logger.Info(strconv.FormatBool(hcpairing.Config.GetDebugMode()))
+	server := hcpairing.NewServer()
+	server.Start()
 }
