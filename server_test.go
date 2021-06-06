@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/http/httptest"
+	"sort"
 	"testing"
 
 	"github.com/RainrainWu/hcpairing"
@@ -38,6 +39,7 @@ func TestGetTags(t *testing.T) {
 			func(t *testing.T) {
 				req, _ := http.NewRequest("GET", queryString, nil)
 				server.GetRouter().ServeHTTP(recorder, req)
+				sort.Strings(param.tags)
 				respBytes, _ := json.Marshal(
 					map[string]interface{}{
 						"tags": param.tags,

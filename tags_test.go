@@ -29,10 +29,8 @@ func TestSearchTags(t *testing.T) {
 		t.Run(
 			fmt.Sprintf("%v", param.prefix),
 			func(t *testing.T) {
-				actual := hcpairing.SearchTags(param.prefix)
-				sort.Strings(actual)
 				sort.Strings(param.expect)
-				assert.Equal(t, param.expect, actual)
+				assert.Equal(t, param.expect, hcpairing.SearchTags(param.prefix))
 			},
 		)
 	}

@@ -2,7 +2,7 @@ package hcpairing
 
 import (
 	"errors"
-	"fmt"
+	"sort"
 	"strings"
 )
 
@@ -55,7 +55,6 @@ func buildTagsPrefixTree() TagsPrefixTreeNode {
 	for _, tag := range allTags {
 		addTagsToPrefixTree(root, tag)
 	}
-	fmt.Println(root)
 	return root
 }
 
@@ -79,7 +78,9 @@ func SearchTags(prefix string) []string {
 			return []string{}
 		}
 	}
-	return ptr.scanTags()
+	tags := ptr.scanTags()
+	sort.Strings(tags)
+	return tags
 }
 
 func (n *tagsPrefixTreeNode) scanTags() []string {
