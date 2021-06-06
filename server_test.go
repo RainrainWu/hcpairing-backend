@@ -3,8 +3,10 @@ package hcpairing_test
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"net/http/httptest"
+	"sort"
 	"testing"
 
 	"github.com/RainrainWu/hcpairing"
@@ -13,22 +15,41 @@ import (
 
 func TestGetTags(t *testing.T) {
 
-	server := hcpairing.NewServer()
-	recorder := httptest.NewRecorder()
-	req, _ := http.NewRequest("GET", "/v1/tags?prefix=tooth", nil)
-	server.GetRouter().ServeHTTP(recorder, req)
-
-	respBytes, _ := json.Marshal(
-		map[string]interface{}{
-			"tags": []string{
-				hcpairing.Toothache,
-				hcpairing.Pregnancy,
-				hcpairing.Cough,
-			},
+	params := []struct {
+		prefix string
+		tags   []string
+	}{
+		{
+			"tooth",
+			[]string{hcpairing.Toothache},
 		},
-	)
-	assert.Equal(t, 200, recorder.Code)
-	assert.Equal(t, string(respBytes), recorder.Body.String())
+		{
+			"s",
+			[]string{hcpairing.SoreMuscles, hcpairing.Stomachache},
+		},
+	}
+
+	for _, param := range params {
+		server := hcpairing.NewServer()
+		recorder := httptest.NewRecorder()
+		queryString := fmt.Sprintf("/v1/tags?prefix=%v", param.prefix)
+
+		t.Run(
+			queryString,
+			func(t *testing.T) {
+				req, _ := http.NewRequest("GET", queryString, nil)
+				server.GetRouter().ServeHTTP(recorder, req)
+				sort.Strings(param.tags)
+				respBytes, _ := json.Marshal(
+					map[string]interface{}{
+						"tags": param.tags,
+					},
+				)
+				assert.Equal(t, 200, recorder.Code)
+				assert.Equal(t, string(respBytes), recorder.Body.String())
+			},
+		)
+	}
 }
 
 func TestPostRecords(t *testing.T) {
