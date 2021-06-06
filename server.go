@@ -19,8 +19,16 @@ func NewServer() Server {
 	instance := server{
 		router: gin.Default(),
 	}
+	instance.router.GET("v1/tags", TagsGetHandler)
 	instance.router.POST("v1/records", RecordsPostHandler)
 	return &instance
+}
+
+func TagsGetHandler(c *gin.Context) {
+	// prefix := c.DefaultQuery("prefix", "")
+	c.JSON(http.StatusOK, gin.H{
+		"tags": []string{Toothache, Pregnancy, Cough},
+	})
 }
 
 type recordPayload struct {
@@ -37,7 +45,6 @@ func RecordsPostHandler(c *gin.Context) {
 		})
 		return
 	}
-
 	c.JSON(http.StatusOK, gin.H{
 		"specialties": DirectConversion(payload.Tags, -1),
 	})
