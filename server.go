@@ -25,9 +25,9 @@ func NewServer() Server {
 }
 
 func TagsGetHandler(c *gin.Context) {
-	// prefix := c.DefaultQuery("prefix", "")
+	prefix := c.DefaultQuery("prefix", "")
 	c.JSON(http.StatusOK, gin.H{
-		"tags": []string{Toothache, Pregnancy, Cough},
+		"tags": SearchTags(prefix),
 	})
 }
 

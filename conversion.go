@@ -2,11 +2,6 @@ package hcpairing
 
 const (
 
-	// Tags
-	Toothache = "Toothache"
-	Pregnancy = "Pregnancy"
-	Cough     = "Cough"
-
 	// Specialties
 	Anaesthesiology          = "Anaesthesiology"
 	AllergologyImmunology    = "AllergologyImmunology"
