@@ -7,6 +7,5 @@ import (
 func main() {
 
 	server := hcpairing.NewServer()
-	server.AddListener()
 	server.Start()
 }

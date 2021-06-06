@@ -1,11 +1,13 @@
 package hcpairing
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 )
 
 type Server interface {
-	AddListener()
+	GetRouter() *gin.Engine
 	Start()
 }
 
@@ -17,15 +19,32 @@ func NewServer() Server {
 	instance := server{
 		router: gin.Default(),
 	}
+	instance.router.POST("v1/records", RecordsPostHandler)
 	return &instance
 }
 
-func (s *server) AddListener() {
-	s.router.GET("/ping", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
+type recordPayload struct {
+	State string   `json:"state"`
+	Tags  []string `json:"tags"`
+}
+
+func RecordsPostHandler(c *gin.Context) {
+	payload := &recordPayload{}
+	err := c.BindJSON(payload)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "invalid paylaod",
 		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"specialties": DirectConversion(payload.Tags, -1),
 	})
+}
+
+func (s *server) GetRouter() *gin.Engine {
+	return s.router
 }
 
 func (s *server) Start() {
