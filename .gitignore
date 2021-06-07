@@ -20,3 +20,6 @@
 
 # OSX artifacts
 .DS_Store
+
+# Build artifacts
+build/*
