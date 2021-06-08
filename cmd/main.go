@@ -9,9 +9,8 @@ import (
 func main() {
 
 	hcpairing.DBConn.Start()
-	hcpairing.DBConn.SetupTags()
 	// hcpairing.DBConn.AppendRecord("california", []string{"Cough", "Itchy Skin"})
-	for _, item := range hcpairing.DBConn.GetRecords() {
+	for _, item := range hcpairing.DBConn.GetRecordsByState("california") {
 		fmt.Println(item)
 	}
 

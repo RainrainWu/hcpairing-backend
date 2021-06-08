@@ -9,10 +9,10 @@ import (
 )
 
 type Database interface {
+	setupTags()
 	Start() error
-	SetupTags()
 	AppendRecord(state string, tags []string)
-	GetRecords() []Record
+	GetRecordsByState(state string) []APIRecord
 }
 
 type database struct {
@@ -24,6 +24,11 @@ type Record struct {
 	gorm.Model
 	State string `json:"state"`
 	Tags  []Tag  `gorm:"many2many:record_tags;" json:"tags"`
+}
+
+type APIRecord struct {
+	State string   `json:"state"`
+	Tags  []string `json:"tags"`
 }
 
 type Tag struct {
@@ -51,15 +56,35 @@ func NewDatabase() Database {
 	return &instance
 }
 
+func recordToAPISpec(records []Record) []APIRecord {
+
+	apiRecords := []APIRecord{}
+	for _, item := range records {
+		tags := []string{}
+		for _, tag := range item.Tags {
+			tags = append(tags, tag.Name)
+		}
+		apiRecords = append(
+			apiRecords,
+			APIRecord{
+				State: item.State,
+				Tags:  tags,
+			},
+		)
+	}
+	return apiRecords
+}
+
 func (d *database) Start() error {
 
 	var err error
 	d.connection, err = gorm.Open(postgres.Open(d.dsn), &gorm.Config{})
 	d.connection.AutoMigrate(&Record{}, &Tag{})
+	d.setupTags()
 	return err
 }
 
-func (d *database) SetupTags() {
+func (d *database) setupTags() {
 
 	for _, tag := range allTags {
 		result := d.connection.Where("name = ?", tag).First(&Tag{})
@@ -87,9 +112,13 @@ func (d *database) AppendRecord(state string, tags []string) {
 	)
 }
 
-func (d *database) GetRecords() []Record {
+func (d *database) GetRecordsByState(state string) []APIRecord {
 
 	records := []Record{}
-	d.connection.Preload("Tags").Find(&records)
-	return records
+	if state != "" {
+		d.connection.Preload("Tags").Where("state = ?", state).Find(&records)
+	} else {
+		d.connection.Preload("Tags").Find(&records)
+	}
+	return recordToAPISpec(records)
 }
