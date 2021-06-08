@@ -6,6 +6,7 @@ import (
 
 func main() {
 
+	hcpairing.DBConn.Start()
 	server := hcpairing.NewServer()
 	server.Start()
 }

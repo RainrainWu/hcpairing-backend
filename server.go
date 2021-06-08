@@ -20,20 +20,34 @@ func NewServer() Server {
 		router: gin.Default(),
 	}
 	instance.router.GET("v1/tags", TagsGetHandler)
+	instance.router.GET("v1/records", RecordsGetHandler)
 	instance.router.POST("v1/records", RecordsPostHandler)
 	return &instance
 }
 
 func TagsGetHandler(c *gin.Context) {
 	prefix := c.DefaultQuery("prefix", "")
-	c.JSON(http.StatusOK, gin.H{
-		"tags": SearchTags(prefix),
-	})
+	c.JSON(
+		http.StatusOK,
+		gin.H{
+			"tags": SearchTags(prefix),
+		},
+	)
 }
 
 type recordPayload struct {
 	State string   `json:"state"`
 	Tags  []string `json:"tags"`
+}
+
+func RecordsGetHandler(c *gin.Context) {
+	state := c.DefaultQuery("state", "")
+	c.JSON(
+		http.StatusOK,
+		gin.H{
+			"results": DBConn.GetRecordsByState(state),
+		},
+	)
 }
 
 func RecordsPostHandler(c *gin.Context) {
