@@ -36,16 +36,16 @@ func TagsGetHandler(c *gin.Context) {
 }
 
 type recordPayload struct {
-	State string   `json:"state"`
-	Tags  []string `json:"tags"`
+	Zipcode string   `json:"zipcode"`
+	Tags    []string `json:"tags"`
 }
 
 func RecordsGetHandler(c *gin.Context) {
-	state := c.DefaultQuery("state", "")
+	zipcode := c.DefaultQuery("zipcode", "")
 	c.JSON(
 		http.StatusOK,
 		gin.H{
-			"results": DBConn.GetRecordsByState(state),
+			"results": DBConn.GetRecordsByZipcode(zipcode),
 		},
 	)
 }
@@ -59,6 +59,7 @@ func RecordsPostHandler(c *gin.Context) {
 		})
 		return
 	}
+	DBConn.AppendRecord(payload.Zipcode, payload.Tags)
 	c.JSON(http.StatusOK, gin.H{
 		"specialties": DirectConversion(payload.Tags, -1),
 	})

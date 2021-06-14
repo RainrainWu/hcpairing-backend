@@ -12,7 +12,7 @@ type Database interface {
 	setupTags()
 	Start() error
 	AppendRecord(state string, tags []string)
-	GetRecordsByState(state string) []APIRecord
+	GetRecordsByZipcode(zipcode string) []APIRecord
 }
 
 type database struct {
@@ -22,13 +22,13 @@ type database struct {
 
 type Record struct {
 	gorm.Model
-	State string `json:"state"`
-	Tags  []Tag  `gorm:"many2many:record_tags;" json:"tags"`
+	Zipcode string `sql:"DEFAULT:''" json:"zipcode"`
+	Tags    []Tag  `gorm:"many2many:record_tags;" json:"tags"`
 }
 
 type APIRecord struct {
-	State string   `json:"state"`
-	Tags  []string `json:"tags"`
+	Zipcode string   `json:"zipcode"`
+	Tags    []string `json:"tags"`
 }
 
 type Tag struct {
@@ -67,8 +67,8 @@ func recordToAPISpec(records []Record) []APIRecord {
 		apiRecords = append(
 			apiRecords,
 			APIRecord{
-				State: item.State,
-				Tags:  tags,
+				Zipcode: item.Zipcode,
+				Tags:    tags,
 			},
 		)
 	}
@@ -96,7 +96,7 @@ func (d *database) setupTags() {
 	}
 }
 
-func (d *database) AppendRecord(state string, tags []string) {
+func (d *database) AppendRecord(zipcode string, tags []string) {
 
 	recordTags := []Tag{}
 	for _, tag := range tags {
@@ -106,17 +106,17 @@ func (d *database) AppendRecord(state string, tags []string) {
 	}
 	d.connection.Create(
 		&Record{
-			State: state,
-			Tags:  recordTags,
+			Zipcode: zipcode,
+			Tags:    recordTags,
 		},
 	)
 }
 
-func (d *database) GetRecordsByState(state string) []APIRecord {
+func (d *database) GetRecordsByZipcode(zipcode string) []APIRecord {
 
 	records := []Record{}
-	if state != "" {
-		d.connection.Preload("Tags").Where("state = ?", state).Find(&records)
+	if zipcode != "" {
+		d.connection.Preload("Tags").Where("zipcode = ?", zipcode).Find(&records)
 	} else {
 		d.connection.Preload("Tags").Find(&records)
 	}
