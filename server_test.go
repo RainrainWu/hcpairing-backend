@@ -57,8 +57,8 @@ func TestPostRecords(t *testing.T) {
 	server := hcpairing.NewServer()
 	recorder := httptest.NewRecorder()
 	payload := map[string]interface{}{
-		"state": "California",
-		"tags":  []string{hcpairing.Toothache},
+		"zipcode": "52030",
+		"tags":    []string{hcpairing.Toothache},
 	}
 	paylodBytes, _ := json.Marshal(payload)
 
