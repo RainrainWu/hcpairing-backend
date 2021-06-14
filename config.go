@@ -17,6 +17,7 @@ type ConfigSet interface {
 	GetPostgresUser() string
 	GetPostgresPassword() string
 	GetPostgresDBName() string
+	GetGoogleMapAPIKey() string
 }
 
 type configSet struct {
@@ -26,6 +27,7 @@ type configSet struct {
 	postgresUser     string
 	postgresPassword string
 	postgresDBName   string
+	googleMapAPIKey  string
 }
 
 func NewConfigSet() ConfigSet {
@@ -42,6 +44,7 @@ func NewConfigSet() ConfigSet {
 		postgresUser:     os.Getenv("POSTGRES_USER"),
 		postgresPassword: os.Getenv("POSTGRES_PASSWORD"),
 		postgresDBName:   os.Getenv("POSTGRES_DB"),
+		googleMapAPIKey:  os.Getenv("GOOGLE_MAP_API_KEY"),
 	}
 	return instance
 }
@@ -68,4 +71,8 @@ func (c *configSet) GetPostgresPassword() string {
 
 func (c *configSet) GetPostgresDBName() string {
 	return c.postgresDBName
+}
+
+func (c *configSet) GetGoogleMapAPIKey() string {
+	return c.googleMapAPIKey
 }
