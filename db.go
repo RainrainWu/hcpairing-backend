@@ -27,8 +27,8 @@ type Record struct {
 }
 
 type APIRecord struct {
-	State string   `json:"state"`
-	Tags  []string `json:"tags"`
+	Zipcode string   `json:"zipcode"`
+	Tags    []string `json:"tags"`
 }
 
 type Tag struct {
@@ -67,8 +67,8 @@ func recordToAPISpec(records []Record) []APIRecord {
 		apiRecords = append(
 			apiRecords,
 			APIRecord{
-				State: item.Zipcode,
-				Tags:  tags,
+				Zipcode: item.Zipcode,
+				Tags:    tags,
 			},
 		)
 	}
