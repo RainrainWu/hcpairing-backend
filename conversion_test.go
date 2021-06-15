@@ -36,7 +36,13 @@ func TestDirectConversion(t *testing.T) {
 		},
 		{
 			[]string{hcpairing.Cough, hcpairing.Pregnancy},
-			[]string{hcpairing.Pneumology, hcpairing.Obstetrics},
+			[]string{
+				hcpairing.Pneumology,
+				hcpairing.FamilyMedicine,
+				hcpairing.Cardiology,
+				hcpairing.Otorhinolaryngology,
+				hcpairing.Obstetrics,
+			},
 		},
 	}
 
