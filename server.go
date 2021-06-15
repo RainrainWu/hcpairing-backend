@@ -87,6 +87,7 @@ func PlacesGetHandler(c *gin.Context) {
 			http.StatusBadRequest,
 			gin.H{"message": "invalid place name"},
 		)
+		return
 	}
 	cacheResult, err := CacheConn.GetPlaceCache(name)
 	if err == nil {
@@ -102,6 +103,7 @@ func PlacesGetHandler(c *gin.Context) {
 			http.StatusNotFound,
 			gin.H{"message": "invalid place name"},
 		)
+		return
 	}
 	c.JSON(
 		http.StatusOK,
