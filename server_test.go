@@ -24,7 +24,15 @@ func TestGetTags(t *testing.T) {
 		},
 		{
 			"s",
-			[]string{hcpairing.SoreMuscles, hcpairing.Stomachache},
+			[]string{
+				hcpairing.ShortOfBreath,
+				hcpairing.Sneeze,
+				hcpairing.SoreEyes,
+				hcpairing.SoreMuscles,
+				hcpairing.SoreThroat,
+				hcpairing.Stomachache,
+				hcpairing.Stuffy,
+			},
 		},
 	}
 
