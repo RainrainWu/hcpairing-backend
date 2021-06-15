@@ -75,6 +75,14 @@ func PlacesGetHandler(c *gin.Context) {
 			gin.H{"message": "invalid place name"},
 		)
 	}
+	cacheResult, err := CacheConn.GetPlaceCache(name)
+	if err == nil {
+		c.JSON(
+			http.StatusOK,
+			gin.H{"name": cacheResult.Name, "rating": cacheResult.Rating},
+		)
+		return
+	}
 	result, err := GMPGateway.GetRatingByGoogleMapsAPI(name)
 	if err != nil {
 		c.JSON(
