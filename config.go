@@ -17,6 +17,9 @@ type ConfigSet interface {
 	GetPostgresUser() string
 	GetPostgresPassword() string
 	GetPostgresDBName() string
+	GetRedisHost() string
+	GetRedisPort() string
+	GetRedisPassword() string
 	GetGoogleMapAPIKey() string
 }
 
@@ -27,6 +30,9 @@ type configSet struct {
 	postgresUser     string
 	postgresPassword string
 	postgresDBName   string
+	redisHost        string
+	redisPort        string
+	redisPassword    string
 	googleMapAPIKey  string
 }
 
@@ -44,6 +50,9 @@ func NewConfigSet() ConfigSet {
 		postgresUser:     os.Getenv("POSTGRES_USER"),
 		postgresPassword: os.Getenv("POSTGRES_PASSWORD"),
 		postgresDBName:   os.Getenv("POSTGRES_DB"),
+		redisHost:        os.Getenv("REDIS_HOST"),
+		redisPort:        os.Getenv("REDIS_PORT"),
+		redisPassword:    os.Getenv("REDIS_PASSWORD"),
 		googleMapAPIKey:  os.Getenv("GOOGLE_MAP_API_KEY"),
 	}
 	return instance
@@ -75,4 +84,16 @@ func (c *configSet) GetPostgresDBName() string {
 
 func (c *configSet) GetGoogleMapAPIKey() string {
 	return c.googleMapAPIKey
+}
+
+func (c *configSet) GetRedisHost() string {
+	return c.redisHost
+}
+
+func (c *configSet) GetRedisPort() string {
+	return c.redisPort
+}
+
+func (c *configSet) GetRedisPassword() string {
+	return c.redisPassword
 }

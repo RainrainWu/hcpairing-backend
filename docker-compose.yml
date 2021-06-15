@@ -3,20 +3,32 @@ version: "3"
 services:
     postgres:
         image: "postgres:13"
+        restart: always
         env_file:
             - .env
-        restart: always
         ports:
             - "5432:5432"
         volumes:
             - pgdata:/var/lib/postgresql/data
-    hcpairing:
-        image: "rainrainwu/hcpairing:latest"
+    redis:
+        image: "docker.io/bitnami/redis:6.2.4"
+        restart: always
         env_file:
             - .env
+        environment:
+            - REDIS_TLS_ENABLED=no
+            - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
+        ports:
+            - "6379:6379"
+        command: /opt/bitnami/scripts/redis/run.sh --maxmemory 256mb
+    hcpairing:
+        image: "rainrainwu/hcpairing:latest"
         restart: always
+        env_file:
+            - .env
         depends_on:
             - "postgres"
+            - "redis"
         ports:
             - "8080:8080"
 
