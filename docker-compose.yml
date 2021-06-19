@@ -30,6 +30,7 @@ services:
             - "postgres"
             - "redis"
         ports:
+            - "443:443"
             - "8080:8080"
 
 
