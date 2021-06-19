@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-contrib/cors"
+	"github.com/gin-gonic/autotls"
 	"github.com/gin-gonic/gin"
 )
 
@@ -32,6 +33,7 @@ func NewServer() Server {
 			},
 		),
 	)
+	autotls.Run(instance.router, Config.GetHCPairingDNSName())
 	instance.router.GET("v1/tags", TagsGetHandler)
 	instance.router.GET("v1/records", RecordsGetHandler)
 	instance.router.POST("v1/records", RecordsPostHandler)
