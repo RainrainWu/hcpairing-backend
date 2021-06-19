@@ -118,5 +118,5 @@ func (s *server) GetRouter() *gin.Engine {
 }
 
 func (s *server) Start() {
-	s.router.Run()
+	autotls.Run(s.router, Config.GetHCPairingDNSName())
 }
