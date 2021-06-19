@@ -33,7 +33,6 @@ func NewServer() Server {
 			},
 		),
 	)
-	autotls.Run(instance.router, Config.GetHCPairingDNSName())
 	instance.router.GET("v1/tags", TagsGetHandler)
 	instance.router.GET("v1/records", RecordsGetHandler)
 	instance.router.POST("v1/records", RecordsPostHandler)
@@ -118,5 +117,5 @@ func (s *server) GetRouter() *gin.Engine {
 }
 
 func (s *server) Start() {
-	s.router.Run()
+	autotls.Run(s.router, Config.GetHCPairingDNSName())
 }
