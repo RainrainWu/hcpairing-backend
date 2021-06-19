@@ -21,6 +21,7 @@ type ConfigSet interface {
 	GetRedisPort() string
 	GetRedisPassword() string
 	GetGoogleMapAPIKey() string
+	GetHCPairingDNSName() string
 }
 
 type configSet struct {
@@ -34,6 +35,7 @@ type configSet struct {
 	redisPort        string
 	redisPassword    string
 	googleMapAPIKey  string
+	hcpairingDNSName string
 }
 
 func NewConfigSet() ConfigSet {
@@ -54,6 +56,7 @@ func NewConfigSet() ConfigSet {
 		redisPort:        os.Getenv("REDIS_PORT"),
 		redisPassword:    os.Getenv("REDIS_PASSWORD"),
 		googleMapAPIKey:  os.Getenv("GOOGLE_MAP_API_KEY"),
+		hcpairingDNSName: os.Getenv("HCPAIRING_DNS_NAME"),
 	}
 	return instance
 }
@@ -96,4 +99,8 @@ func (c *configSet) GetRedisPort() string {
 
 func (c *configSet) GetRedisPassword() string {
 	return c.redisPassword
+}
+
+func (c *configSet) GetHCPairingDNSName() string {
+	return c.hcpairingDNSName
 }
