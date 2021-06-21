@@ -21,27 +21,7 @@ func NewServer() Server {
 	instance := server{
 		router: gin.Default(),
 	}
-	instance.router.Use(
-		cors.New(
-			cors.Config{
-				AllowOrigins: []string{
-					"https://wonderful-water-0f33e6400.azurestaticapps.net/",
-					"https://gentle-hill-05b25e000.azurestaticapps.net/",
-					"http://localhost:3000",
-				},
-				AllowHeaders: []string{
-					"Origin",
-					"Content-Length",
-					"Content-Type",
-					"User-Agent",
-					"Referrer",
-					"Host",
-					"Token",
-				},
-				AllowMethods: []string{"GET", "POST"},
-			},
-		),
-	)
+	instance.router.Use(cors.Default())
 	instance.router.GET("v1/tags", TagsGetHandler)
 	instance.router.GET("v1/records", RecordsGetHandler)
 	instance.router.POST("v1/records", RecordsPostHandler)
