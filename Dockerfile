@@ -18,4 +18,5 @@ COPY --from=base /hcpairing/build/hcpairing /app/hcpairing
 RUN adduser -S rain && chown -R rain /app
 USER rain
 EXPOSE 8080
+EXPOSE 443
 CMD ["./app/hcpairing"]
